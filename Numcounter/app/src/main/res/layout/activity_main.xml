@@ -1,18 +1,84 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?><!--
+    LinearLayout:
+    - LinearLayout은 Android에서 사용하는 레이아웃 중 하나로, 자식 뷰(View)들을 한 줄로 나열하는 레이아웃입니다.
+    - 자식 뷰들은 수평 또는 수직으로 나열될 수 있습니다. 이 방향은 'android:orientation' 속성을 통해 설정됩니다.
+
+    android:orientation 속성:
+    - LinearLayout의 자식 뷰들이 나열되는 방향을 지정합니다.
+    - "vertical" 값은 자식 뷰들을 수직으로 나열하라는 의미입니다.
+    - "horizontal" 값은 자식 뷰들을 수평으로 나열하라는 의미입니다.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <!--
+        android:layout_width & android:layout_height 속성:
+        - 모든 Android 뷰는 layout_width와 layout_height 속성이 필요합니다.
+        - "wrap_content" 값은 뷰가 자신의 내용에 맞게 크기를 조정하라는 의미입니다. 즉, "자식의 크기에 맞춰라"라는 의미입니다.
+        - "match_parent" 값은 부모의 너비 또는 높이를 완전히 채우라는 의미입니다. 즉, "부모의 크기에 맞춰라"라는 의미입니다.
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        "sp, dp" 에 대한 설명:
+        - sp (Scale-independent Pixels): 텍스트 크기를 지정할 때 사용되며, 사용자의 폰트 크기 설정에 따라 조정됩니다.
+        - dp (Density-independent Pixels): 화면 밀도에 독립적인 픽셀 단위로, 다양한 화면 밀도를 가진 디바이스에서 일관된 크기를 유지하기 위해 사용됩니다.
+
+        '@' 에 대한 설명:
+        - '@' 기호는 리소스 참조를 나타냅니다. 예를 들어, "@color/blue"는 'color' 리소스 폴더에 정의된 'blue' 색상을 참조합니다.
+
+        '|' 에 대한 설명:
+        - '|' 기호는 여러 스타일 속성을 동시에 지정할 때 사용됩니다. "bold|italic"은 텍스트를 굵게하면서 동시에 이탤릭체로 표시하라는 의미입니다.
+
+        layout_gravity, gravity에 대한 설명:
+        - 'gravity' 속성은 뷰 내의 콘텐츠 위치를 지정합니다.
+        - 'layout_gravity' 속성은 뷰 자체가 부모 레이아웃 내에서 어떻게 위치할지를 지정합니다.
+        - 'match_parent'일 때, 'gravity' 속성을 사용하여 내용을 중앙에 배치할 수 있습니다.
+        - 'wrap_content'일 때, 'layout_gravity' 속성을 사용하여 뷰 자체를 부모 레이아웃의 중앙에 배치할 수 있습니다.
+
+        center_horizontal|center_vertical 을 합친 속성 center에 대한 설명:
+        - 'center'는 'center_horizontal'과 'center_vertical'을 동시에 적용하는 것과 동일한 효과를 가집니다. 즉, 뷰의 내용을 중앙에 배치합니다.
+    -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:gravity="center"
+        android:text="100"
+        android:textColor="@color/blue"
+        android:textSize="100sp"
+        android:textStyle="bold|italic" />
+    <!--
+        android:layout_weight:
+        - LinearLayout에서 자식 뷰의 너비나 높이를 비율로 분배할 때 사용합니다.
+        - 여기서는 두 버튼 모두 'android:layout_weight'를 "2"로 설정하여 동일한 너비를 차지하게 합니다.
+        - 'android:layout_weight'를 사용할 때 'android:layout_width' 또는 'android:layout_height' (방향에 따라)를 "0dp"로 설정해야 합니다. 이렇게 설정하면 LinearLayout은 뷰의 너비나 높이를 'layout_weight' 속성에 따라 동적으로 조정합니다.
+
+        android:layout_margin & android:layout_marginStart:
+        - 'layout_margin' 속성은 뷰 주위의 외부 여백을 지정합니다.
+        - 'layout_marginStart'와 'layout_marginLeft'는 뷰의 시작(왼쪽) 여백을 지정합니다. 그러나 'layout_marginStart'는 오른쪽에서 왼쪽으로의 언어 설정과 같이 레이아웃의 방향이 변경될 때 적절하게 조정됩니다. 따라서 국제화를 고려할 때 'layout_marginStart'를 사용하는 것이 좋습니다.
+    -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_weight="2"
+            android:text="초기화" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_weight="2"
+            android:text="+" />
+    </LinearLayout>
+
+</LinearLayout>
