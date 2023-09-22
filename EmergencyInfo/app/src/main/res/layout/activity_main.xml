@@ -6,13 +6,68 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <!--
+        style 속성을 통해 미리 정의된 스타일을 적용하고 있습니다.
+    -->
     <TextView
+        android:id="@+id/nameTextView"
+        style="@style/Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="36dp"
+        android:text="이름"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!--
+        사용자의 이름 값
+    -->
+    <TextView
+        android:id="@+id/nameValueTextView"
+        style="@style/Value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="36dp"
+        android:ellipsize="end"
+        android:gravity="end"
+        android:maxLines="1"
+        android:text="오창모"
+        app:layout_constraintBaseline_toBaselineOf="@id/nameTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/guideline" />
+
+    <!--
+        생년월일
+    -->
+    <TextView
+        android:id="@+id/birthdateTextView"
+        style="@style/Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="생년월일"
+        app:layout_constraintStart_toStartOf="@id/nameTextView"
+        app:layout_constraintTop_toBottomOf="@id/nameTextView" />
+
+    <!--
+        사용자의 생년월일 값
+    -->
+    <TextView
+        android:id="@+id/birthdateValueTextView"
+        style="@style/Value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0000-00-00"
+        app:layout_constraintBaseline_toBaselineOf="@id/birthdateTextView"
+        app:layout_constraintEnd_toEndOf="@id/nameValueTextView" />
+
+    <!--
+        Guideline은 레이아웃 내에서 뷰의 위치를 정의하는 데 사용됩니다.
+        이 Guideline은 레이아웃의 너비의 40% 위치에 수직으로 설정되어 있습니다.
+    -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.4" />
 </androidx.constraintlayout.widget.ConstraintLayout>
