@@ -12,6 +12,8 @@ class MainActivity : AppCompatActivity() {
      * lateinit 키워드를 사용하여 non-null 타입으로 선언하며, 초기화는 나중에 수행합니다.
      */
     private lateinit var binding: ActivityMainBinding
+    var cmToM = true
+    var inputNumber: Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         /**
@@ -39,9 +41,6 @@ class MainActivity : AppCompatActivity() {
         val inputEditText = binding.inputEditText
         val inputUnitTextView = binding.inputUnitTextView
         val swapImageButton = binding.swapImageButton
-
-        var inputNumber: Int = 0
-        var cmToM = true
 
         /**
          * addTextChangedListener를 사용하여 inputEditText의 텍스트가 변경될 때마다 이벤트를 받아옵니다.
@@ -77,5 +76,26 @@ class MainActivity : AppCompatActivity() {
                 outputTextView.text = inputNumber.times(100).toString()
             }
         }
+    }
+
+    /**
+     * onSaveInstanceState 메서드를 오버라이드하여 액티비티의 상태를 저장합니다.
+     * 이 메서드는 시스템이 액티비티를 종료하기 전에 호출되어, 액티비티의 상태를 저장할 수 있게 합니다.
+     */
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putBoolean("cmToM", cmToM)
+        super.onSaveInstanceState(outState)
+    }
+
+    /**
+     * onRestoreInstanceState 메서드를 오버라이드하여 액티비티의 상태를 복원합니다.
+     * 이 메서드는 액티비티가 재생성될 때 호출되어, 이전에 저장된 상태를 복원할 수 있게 합니다.
+     */
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        cmToM = savedInstanceState.getBoolean("cmToM")
+        Log.d("cmToM", cmToM.toString())
+        binding.inputUnitTextView.text = if (cmToM) "cm" else "m"
+        binding.outputUnitTextView.text = if (cmToM) "m" else "cm"
+        super.onRestoreInstanceState(savedInstanceState)
     }
 }
