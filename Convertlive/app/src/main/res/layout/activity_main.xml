@@ -20,8 +20,7 @@
         android:gravity="end"
         android:hint="자연수를 입력해주세요"
         android:inputType="numberDecimal"
-        android:textColor="@color/purple_700"
-        android:textColorHint="@color/purple_200"
+        android:maxLength="7"
         android:textSize="20sp"
         android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -40,8 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:gravity="end"
-        android:text="100"
-        android:textColor="@color/black"
+        android:text="0"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="@id/inputEditText"
         app:layout_constraintStart_toStartOf="@id/inputEditText"
@@ -60,6 +58,7 @@
         app:layout_constraintBottom_toBottomOf="@id/inputEditText"
         app:layout_constraintStart_toEndOf="@id/inputEditText"
         app:layout_constraintTop_toTopOf="@id/inputEditText" />
+
     <TextView
         android:id="@+id/outputUnitTextView"
         android:layout_width="wrap_content"
@@ -76,6 +75,7 @@
         - 사용자가 클릭할 수 있는 이미지 버튼입니다.
     -->
     <ImageButton
+        android:id="@+id/swapImageButton"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="16dp"

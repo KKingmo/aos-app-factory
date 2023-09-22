@@ -2,7 +2,8 @@ package kingmo.kkk.convertlive
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.TextView
+import android.util.Log
+import androidx.core.widget.addTextChangedListener
 import kingmo.kkk.convertlive.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -19,7 +20,9 @@ class MainActivity : AppCompatActivity() {
          */
         binding = ActivityMainBinding.inflate(layoutInflater)
 
-        // 바인딩 클래스의 root 프로퍼티를 사용하여 레이아웃의 최상위 뷰를 얻고, 이를 setContentView 메서드에 전달하여 화면에 표시합니다.
+        /**
+         * setContentView에 binding.root를 전달하여, 화면에 레이아웃의 최상위 뷰를 표시합니다.
+         */
         val view = binding.root
         setContentView(view)
 
@@ -35,14 +38,44 @@ class MainActivity : AppCompatActivity() {
         val outputUnitTextView = binding.outputUnitTextView
         val inputEditText = binding.inputEditText
         val inputUnitTextView = binding.inputUnitTextView
+        val swapImageButton = binding.swapImageButton
+
+        var inputNumber: Int = 0
+        var cmToM = true
 
         /**
-         * 아래의 findViewById를 사용하여 textView에 접근하는 시도는 NullPointerException을 발생시킵니다.
-         * findViewById는 activity_main.xml 레이아웃에서 R.id.textView ID를 가진 뷰를 찾을 수 없으므로
-         * 바인딩 객체를 무시하게 되어, NullPointerException이 발생합니다.
-         *
-         * val textView = findViewById<TextView>(R.id.textView) // 이 코드는 오류를 발생시킵니다.
-         * textView.text = "안녕하세요"
+         * addTextChangedListener를 사용하여 inputEditText의 텍스트가 변경될 때마다 이벤트를 받아옵니다.
+         * 텍스트가 변경될 때마다, 입력된 값을 사용하여 변환된 값을 outputTextView에 표시합니다.
          */
+        inputEditText.addTextChangedListener { text ->
+            inputNumber = if (text.isNullOrEmpty()) {
+                0
+            } else {
+                text.toString().toInt()
+            }
+
+            if (cmToM) {
+                outputTextView.text = inputNumber.times(0.01).toString()
+            } else {
+                outputTextView.text = inputNumber.times(100).toString()
+            }
+        }
+
+        /**
+         * swapImageButton에 setOnClickListener를 설정하여, 버튼이 클릭될 때마다 이벤트를 받아옵니다.
+         * 버튼이 클릭되면, 단위 변환 방식을 변경하고, 관련 텍스트 뷰의 텍스트를 업데이트합니다.
+         */
+        swapImageButton.setOnClickListener {
+            cmToM = cmToM.not()
+            if (cmToM) {
+                inputUnitTextView.text = "cm"
+                outputUnitTextView.text = "m"
+                outputTextView.text = inputNumber.times(0.01).toString()
+            } else {
+                inputUnitTextView.text = "m"
+                outputUnitTextView.text = "cm"
+                outputTextView.text = inputNumber.times(100).toString()
+            }
+        }
     }
 }
