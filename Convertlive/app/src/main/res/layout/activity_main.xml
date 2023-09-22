@@ -7,23 +7,81 @@
     tools:context=".MainActivity">
 
     <!--
-        ConstraintLayout은 뷰의 위치를 상대적으로 지정할 수 있게 해주는 레이아웃입니다.
-
-        ConstraintLayout의 제약 조건들:
-        - app:layout_constraintBottom_toBottomOf, app:layout_constraintEnd_toEndOf, app:layout_constraintStart_toStartOf, app:layout_constraintTop_toTopOf는 TextView를 부모 레이아웃에 상대적으로 위치시키는데 사용됩니다.
-        - app:layout_constraintHorizontal_bias와 app:layout_constraintVertical_bias는 각각 뷰의 수평 및 수직 위치를 조절합니다. 0.0은 시작 부분, 1.0은 끝 부분을 나타냅니다.
+        EditText:
+        - 사용자로부터 텍스트 입력을 받기 위한 뷰입니다.
+        - android:gravity="end"로 설정하여 텍스트를 오른쪽 정렬합니다.
+        - android:hint는 사용자에게 입력을 안내하는 텍스트를 제공합니다.
+        - android:inputType="numberDecimal"로 설정하여 사용자가 소수점을 포함한 숫자만 입력할 수 있게 합니다.
     -->
-    <TextView
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/inputEditText"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:text="안녕하세요"
-        android:textSize="50sp"
-        app:layout_constraintVertical_bias="0.3"
-        app:layout_constraintHorizontal_bias="0.5"
+        android:gravity="end"
+        android:hint="자연수를 입력해주세요"
+        android:inputType="numberDecimal"
+        android:textColor="@color/purple_700"
+        android:textColorHint="@color/purple_200"
+        android:textSize="20sp"
+        android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-         />
+        app:layout_constraintVertical_bias="0.4" />
+    <!--
+        TextView:
+        - 텍스트를 표시하기 위한 뷰입니다.
+    -->
+    <TextView
+        android:id="@+id/outputTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:gravity="end"
+        android:text="100"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="@id/inputEditText"
+        app:layout_constraintStart_toStartOf="@id/inputEditText"
+        app:layout_constraintTop_toBottomOf="@id/inputEditText" />
+    <!--
+        Unit TextViews:
+        - 각각의 입력과 출력 값 옆에 단위를 표시합니다.
+    -->
+    <TextView
+        android:id="@+id/inputUnitTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="cm"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@id/inputEditText"
+        app:layout_constraintStart_toEndOf="@id/inputEditText"
+        app:layout_constraintTop_toTopOf="@id/inputEditText" />
+    <TextView
+        android:id="@+id/outputUnitTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="m"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@id/outputTextView"
+        app:layout_constraintStart_toEndOf="@id/outputTextView"
+        app:layout_constraintTop_toTopOf="@id/outputTextView" />
+
+    <!--
+        ImageButton:
+        - 사용자가 클릭할 수 있는 이미지 버튼입니다.
+    -->
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:src="@drawable/baseline_swap_vert_24"
+        app:layout_constraintBottom_toBottomOf="@id/outputTextView"
+        app:layout_constraintStart_toEndOf="@id/inputUnitTextView"
+        app:layout_constraintTop_toTopOf="@id/inputEditText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
