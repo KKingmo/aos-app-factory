@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <!--
+        ConstraintLayout은 뷰의 위치를 상대적으로 지정할 수 있게 해주는 레이아웃입니다.
+
+        ConstraintLayout의 제약 조건들:
+        - app:layout_constraintBottom_toBottomOf, app:layout_constraintEnd_toEndOf, app:layout_constraintStart_toStartOf, app:layout_constraintTop_toTopOf는 TextView를 부모 레이아웃에 상대적으로 위치시키는데 사용됩니다.
+        - app:layout_constraintHorizontal_bias와 app:layout_constraintVertical_bias는 각각 뷰의 수평 및 수직 위치를 조절합니다. 0.0은 시작 부분, 1.0은 끝 부분을 나타냅니다.
+    -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="안녕하세요"
+        android:textSize="50sp"
+        app:layout_constraintVertical_bias="0.3"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+         />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
