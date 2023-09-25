@@ -98,7 +98,7 @@
         style="@style/Value"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="주의해주세요."
+        android:text=""
         app:layout_constraintBaseline_toBaselineOf="@id/warningTextView"
         app:layout_constraintEnd_toEndOf="@id/nameValueTextView"
         app:layout_constraintStart_toStartOf="@id/guideline"/>
