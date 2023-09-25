@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.core.view.isVisible
 import kingmo.kkk.emergencyinformation.databinding.ActivityMainBinding
 
@@ -21,6 +22,10 @@ class MainActivity : AppCompatActivity() {
         binding.goInputActivityButton.setOnClickListener {
             val intent = Intent(this, EditActivity::class.java) // 명시적 Intent 생성
             startActivity(intent) // EditActivity 시작
+        }
+
+        binding.deleteButton.setOnClickListener {
+            deleteData()
         }
     }
 
@@ -53,7 +58,20 @@ class MainActivity : AppCompatActivity() {
             if (warning.isNullOrEmpty()) {
                 binding.warningValueTextView.text = warning
             }
-
         }
+    }
+
+    /**
+     * 'deleteData' 함수는 Shared Preferences의 모든 데이터를 삭제합니다.
+     * 이 함수는 'deleteButton'이 클릭될 때 호출되며, 데이터 삭제 후에는 'getDataUiUpdate' 함수를 호출하여 UI를 업데이트합니다.
+     * 마지막으로, 데이터가 성공적으로 삭제되면 사용자에게 토스트 메시지로 알립니다.
+     */
+    private fun deleteData() {
+        with(getSharedPreferences(USER_INFORMATION, MODE_PRIVATE).edit()) {
+            clear() // 모든 데이터 삭제
+            apply() // 변경사항 적용
+            getDataUiUpdate() // UI 업데이트
+        }
+        Toast.makeText(this, "초기화를 완료했습니다.", Toast.LENGTH_SHORT).show()
     }
 }
