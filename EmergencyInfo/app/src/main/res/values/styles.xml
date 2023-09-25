@@ -8,5 +8,6 @@
     </style>
     <style name="Value">
         <item name="android:textSize">20sp</item>
+        <item name="android:gravity">end</item>
     </style>
 </resources>
