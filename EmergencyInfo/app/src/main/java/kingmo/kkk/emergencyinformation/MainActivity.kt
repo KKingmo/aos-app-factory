@@ -2,6 +2,7 @@ package kingmo.kkk.emergencyinformation
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -24,8 +25,25 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent) // EditActivity 시작
         }
 
+        /**
+         * 'deleteButton' 클릭 시, 'deleteData' 함수를 호출하여 저장된 사용자 정보를 삭제합니다.
+         */
         binding.deleteButton.setOnClickListener {
             deleteData()
+        }
+
+        /**
+         * 'emergencyContactLayer' 클릭 시, 사용자의 비상 연락처로 전화를 걸 수 있도록 합니다.
+         * 이를 위해 암시적 Intent를 생성하고, 'Intent.ACTION_VIEW' 액션을 사용합니다.
+         * 'data' 프로퍼티에는 전화번호를 'tel:' 스키마와 함께 URI로 설정합니다.
+         */
+        binding.emergencyContactLayer.setOnClickListener {
+            with(Intent(Intent.ACTION_VIEW)) {
+                val phoneNumber =
+                    binding.emergencyContactValueTextView.text.toString().replace("-", "")
+                data = Uri.parse("tel:$phoneNumber")
+                startActivity(this)
+            }
         }
     }
 
@@ -55,7 +73,7 @@ class MainActivity : AppCompatActivity() {
             binding.warningTextView.isVisible = warning.isNullOrEmpty().not()
             binding.warningValueTextView.isVisible = warning.isNullOrEmpty().not()
 
-            if (warning.isNullOrEmpty()) {
+            if (!warning.isNullOrEmpty()) {
                 binding.warningValueTextView.text = warning
             }
         }
