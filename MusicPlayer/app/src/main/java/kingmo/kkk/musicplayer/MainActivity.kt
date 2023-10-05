@@ -1,10 +1,11 @@
 package kingmo.kkk.musicplayer
 
 import android.content.Intent
-import android.media.MediaPlayer
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import kingmo.kkk.musicplayer.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -17,6 +18,24 @@ class MainActivity : AppCompatActivity() {
         binding.playButton.setOnClickListener { mediaPlayerPlay() }
         binding.pauseButton.setOnClickListener { mediaPlayerPause() }
         binding.stopButton.setOnClickListener { mediaPlayerStop() }
+
+        checkAndRequestPermissions()
+    }
+
+    private fun checkAndRequestPermissions() {
+        val permission = "android.permission.POST_NOTIFICATIONS"
+
+        if (ContextCompat.checkSelfPermission(
+                this,
+                permission
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(this, arrayOf(permission), REQUEST_CODE)
+        }
+    }
+
+    companion object {
+        const val REQUEST_CODE = 101
     }
 
     private fun mediaPlayerPlay() {
@@ -35,5 +54,10 @@ class MainActivity : AppCompatActivity() {
         val intent =
             Intent(this, MediaPlayerService::class.java).apply { action = MEDIA_PLAYER_STOP }
         startService(intent)
+    }
+
+    override fun onDestroy() {
+        stopService(Intent(this, MediaPlayerService::class.java))
+        super.onDestroy()
     }
 }
