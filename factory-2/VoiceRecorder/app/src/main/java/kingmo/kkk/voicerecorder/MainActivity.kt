@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -29,6 +30,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private var recorder: MediaRecorder? = null
+    private var player: MediaPlayer? = null
     private var fileName: String = ""
     private var state: State = State.RELEASE
 
@@ -48,6 +50,28 @@ class MainActivity : AppCompatActivity() {
                     onRecord(false)
                 }
                 State.PLAYING -> {}
+            }
+        }
+
+        binding.playButton.setOnClickListener {
+            when (state) {
+                State.RELEASE -> {
+                    onPlay(true)
+                }
+                else -> {
+                    // do nothing
+                }
+            }
+        }
+
+        binding.stopButton.setOnClickListener {
+            when (state) {
+                State.PLAYING -> {
+                    onPlay(false)
+                }
+                else -> {
+                    // do nothing
+                }
             }
         }
     }
@@ -77,6 +101,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onRecord(start: Boolean) = if (start) startRecording() else stopRecording()
+
+    private fun onPlay(start: Boolean) = if (start) startPlaying() else stopPlaying()
 
     private fun startRecording() {
         state = State.RECORDING
@@ -125,6 +151,37 @@ class MainActivity : AppCompatActivity() {
             ColorStateList.valueOf(ContextCompat.getColor(this, R.color.red))
         binding.playButton.isEnabled = true
         binding.playButton.alpha = 1.0f
+    }
+
+    private fun startPlaying() {
+        state = State.PLAYING
+
+        player = MediaPlayer().apply {
+            try {
+                setDataSource(fileName)
+                prepare()
+            } catch (e: IOException) {
+                Log.e("APP", "media player prepare fail $e")
+            }
+            start()
+        }
+
+        player?.setOnCompletionListener {
+            stopPlaying()
+        }
+
+        binding.recordButton.isEnabled = false
+        binding.recordButton.alpha = 0.3f
+    }
+
+    private fun stopPlaying() {
+        state = State.RELEASE
+
+        player?.release()
+        player = null
+
+        binding.recordButton.isEnabled = true
+        binding.recordButton.alpha = 1.0f
     }
 
     private fun showPermissionRationalDialog() {
