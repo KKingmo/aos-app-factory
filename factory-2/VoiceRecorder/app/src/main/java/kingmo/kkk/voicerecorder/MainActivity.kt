@@ -3,7 +3,6 @@ package kingmo.kkk.voicerecorder
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.net.Uri
@@ -17,7 +16,7 @@ import androidx.core.content.ContextCompat
 import kingmo.kkk.voicerecorder.databinding.ActivityMainBinding
 import java.io.IOException
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), OnTimerTickListener {
     companion object {
         private const val REQUEST_RECORD_AUDIO_CODE = 200
     }
@@ -27,6 +26,8 @@ class MainActivity : AppCompatActivity() {
     private enum class State {
         RELEASE, RECORDING, PLAYING
     }
+
+    private lateinit var timer: Timer
 
     private lateinit var binding: ActivityMainBinding
     private var recorder: MediaRecorder? = null
@@ -40,6 +41,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         fileName = "${externalCacheDir?.absolutePath}/audiorecordtest.3gp"
+        timer = Timer(this)
 
         binding.recordButton.setOnClickListener {
             when (state) {
@@ -63,6 +65,8 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+        binding.playButton.isEnabled = false
+        binding.playButton.alpha = 0.3f
 
         binding.stopButton.setOnClickListener {
             when (state) {
@@ -121,6 +125,9 @@ class MainActivity : AppCompatActivity() {
             start()
         }
 
+        binding.waveformView.clearData()
+        timer.start()
+
         binding.recordButton.setImageDrawable(
             ContextCompat.getDrawable(
                 this,
@@ -128,7 +135,7 @@ class MainActivity : AppCompatActivity() {
             )
         )
         binding.recordButton.imageTintList =
-            ColorStateList.valueOf(ContextCompat.getColor(this, R.color.black))
+            ColorStateList.valueOf(ContextCompat.getColor(this, R.color.purple_200))
         binding.playButton.isEnabled = false
         binding.playButton.alpha = 0.3f
     }
@@ -139,6 +146,9 @@ class MainActivity : AppCompatActivity() {
             release()
         }
         recorder = null
+
+        timer.stop()
+
         state = State.RELEASE
 
         binding.recordButton.setImageDrawable(
@@ -166,6 +176,9 @@ class MainActivity : AppCompatActivity() {
             start()
         }
 
+        binding.waveformView.clearWave()
+        timer.start()
+
         player?.setOnCompletionListener {
             stopPlaying()
         }
@@ -179,6 +192,8 @@ class MainActivity : AppCompatActivity() {
 
         player?.release()
         player = null
+
+        timer.stop()
 
         binding.recordButton.isEnabled = true
         binding.recordButton.alpha = 1.0f
@@ -204,7 +219,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun navigateToAppSetting() {
-        val intent = Intent(Settings.ACTION_WIFI_SETTINGS).apply {
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
             data = Uri.fromParts("package", packageName, null)
         }
         startActivity(intent)
@@ -231,6 +246,21 @@ class MainActivity : AppCompatActivity() {
             } else {
                 showPermissionSettingDialog()
             }
+        }
+    }
+
+    override fun onTick(duration: Long) {
+        val millisecond = duration % 1000
+        val second = (duration / 1000) % 60
+        val minute = (duration / 1000 / 60)
+
+        binding.timerTextView.text =
+            String.format("%02d:%02d.%02d", minute, second, millisecond / 10)
+
+        if (state == State.PLAYING) {
+            binding.waveformView.replayAmplitude(duration.toInt())
+        } else if (state == State.RECORDING) {
+            binding.waveformView.addAmplitude(recorder?.maxAmplitude?.toFloat() ?: 0f)
         }
     }
 }
