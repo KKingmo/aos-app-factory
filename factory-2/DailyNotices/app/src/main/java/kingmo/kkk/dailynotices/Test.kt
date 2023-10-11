@@ -5,9 +5,6 @@ import java.io.InputStreamReader
 import java.io.PrintWriter
 import java.net.ServerSocket
 
-/**
- * 간단한 low level 소켓 통신 테스트
- */
 fun main() {
     Thread {
         val port = 8080
