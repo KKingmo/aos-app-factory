@@ -8,13 +8,16 @@ import androidx.recyclerview.widget.RecyclerView
 import kingmo.kkk.gitreposearch.databinding.ItemUserBinding
 import kingmo.kkk.gitreposearch.model.User
 
-class UserAdapter : ListAdapter<User, UserAdapter.ViewHolder>(diffUtil) {
+class UserAdapter(val onCLick: (User) -> Unit) : ListAdapter<User, UserAdapter.ViewHolder>(diffUtil) {
 
     inner class ViewHolder(private val viewBinding: ItemUserBinding) :
         RecyclerView.ViewHolder(viewBinding.root) {
 
         fun bind(item: User) {
             viewBinding.usernameTextView.text = item.username
+            viewBinding.root.setOnClickListener {
+                onCLick(item)
+            }
         }
 
     }
