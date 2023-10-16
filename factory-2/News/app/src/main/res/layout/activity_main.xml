@@ -50,18 +50,18 @@
                 android:text="@string/society" />
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/itChip"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/it" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/sportChip"
+                android:id="@+id/sportsChip"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/sports" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/cultureChip"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/culture" />
 
         </com.google.android.material.chip.ChipGroup>
     </HorizontalScrollView>

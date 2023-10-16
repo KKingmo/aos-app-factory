@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var newsAdapter: NewsAdapter
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://www.mk.co.kr")
+        .baseUrl("http://www.yonhapnewstv.co.kr")
         .addConverterFactory(
             TikXmlConverterFactory.create(
                 TikXml.Builder()
@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         newsAdapter = NewsAdapter()
+        val newsService = retrofit.create(NewsService::class.java)
 
         binding.newsRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
@@ -42,20 +43,40 @@ class MainActivity : AppCompatActivity() {
         binding.feedChip.setOnClickListener {
             binding.chipGroup.clearCheck()
             binding.feedChip.isChecked = true
-            // todo api 호출, 리스트 변경
+            newsService.mainFeed().submitList()
         }
         binding.politicsChip.setOnClickListener {
             binding.chipGroup.clearCheck()
             binding.politicsChip.isChecked = true
-            // todo api 호출, 리스트 변경
+            newsService.politicsNews().submitList()
         }
-        binding.economyChip.setOnClickListener {  }
-        binding.societyChip.setOnClickListener {  }
-        binding.itChip.setOnClickListener {  }
-        binding.sportChip.setOnClickListener {  }
+        binding.economyChip.setOnClickListener {
+            binding.chipGroup.clearCheck()
+            binding.economyChip.isChecked = true
+            newsService.economyNews().submitList()
+        }
+        binding.societyChip.setOnClickListener {
+            binding.chipGroup.clearCheck()
+            binding.societyChip.isChecked = true
+            newsService.societyNews().submitList()
+        }
+        binding.sportsChip.setOnClickListener {
+            binding.chipGroup.clearCheck()
+            binding.sportsChip.isChecked = true
+            newsService.sportsNews().submitList()
+        }
+        binding.cultureChip.setOnClickListener {
+            binding.chipGroup.clearCheck()
+            binding.cultureChip.isChecked = true
+            newsService.cultureNews().submitList()
+        }
 
-        val newsService = retrofit.create(NewsService::class.java)
-        newsService.mainFeed().enqueue(object : Callback<NewsRss> {
+        binding.feedChip.isChecked = true
+        newsService.mainFeed().submitList()
+    }
+
+    private fun Call<NewsRss>.submitList() {
+        enqueue(object : Callback<NewsRss> {
             override fun onResponse(call: Call<NewsRss>, response: Response<NewsRss>) {
                 Log.e("MainActivity", "${response.body()?.channel?.items}")
 

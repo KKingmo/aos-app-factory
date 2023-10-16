@@ -4,6 +4,6 @@
     <string name="politics">정치</string>
     <string name="economy">경제</string>
     <string name="society">사회</string>
-    <string name="it">정보기술</string>
     <string name="sports">스포츠</string>
+    <string name="culture">문화</string>
 </resources>
