@@ -1,8 +1,11 @@
 package kingmo.kkk.news
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tickaroo.tikxml.TikXml
 import com.tickaroo.tikxml.retrofit.TikXmlConverterFactory
@@ -18,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var newsAdapter: NewsAdapter
     private val retrofit = Retrofit.Builder()
-        .baseUrl("http://www.yonhapnewstv.co.kr")
+        .baseUrl("https://news.google.com/")
         .addConverterFactory(
             TikXmlConverterFactory.create(
                 TikXml.Builder()
@@ -71,6 +74,20 @@ class MainActivity : AppCompatActivity() {
             newsService.cultureNews().submitList()
         }
 
+        binding.searchTextInputEditText.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                binding.chipGroup.clearCheck()
+
+                binding.searchTextInputEditText.clearFocus()
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(v.windowToken, 0)
+
+                newsService.search(binding.searchTextInputEditText.text.toString()).submitList()
+                return@setOnEditorActionListener true
+            }
+            return@setOnEditorActionListener false
+        }
+
         binding.feedChip.isChecked = true
         newsService.mainFeed().submitList()
     }
@@ -93,7 +110,6 @@ class MainActivity : AppCompatActivity() {
                             }
 
                             news.imageUrl = ogImageNode?.attr("content")
-                            Log.e("MainActivity", "imageUrl: ${news.imageUrl}")
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }

@@ -2,24 +2,27 @@ package kingmo.kkk.news
 
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 interface NewsService {
-    @GET("browse/feed/")
+    @GET("rss?hl=ko&gl=KR&ceid=KR:ko")
     fun mainFeed(): Call<NewsRss>
 
-    @GET("category/news/politics/feed/")
+    @GET("rss/topics/CAAqIQgKIhtDQkFTRGdvSUwyMHZNRFZ4ZERBU0FtdHZLQUFQAQ?hl=ko&gl=KR&ceid=KR%3Ako")
     fun politicsNews(): Call<NewsRss>
 
-    @GET("category/news/economy/feed/")
+    @GET("rss/topics/CAAqIggKIhxDQkFTRHdvSkwyMHZNR2RtY0hNekVnSnJieWdBUAE?hl=ko&gl=KR&ceid=KR%3Ako")
     fun economyNews(): Call<NewsRss>
 
-    @GET("category/news/society/feed/")
+    @GET("rss/topics/CAAqIQgKIhtDQkFTRGdvSUwyMHZNRGs0ZDNJU0FtdHZLQUFQAQ?hl=ko&gl=KR&ceid=KR%3Ako")
     fun societyNews(): Call<NewsRss>
 
-    @GET("category/news/sports/feed/")
+    @GET("rss/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRFp1ZEdvU0FtdHZHZ0pMVWlnQVAB?hl=ko&gl=KR&ceid=KR%3Ako")
     fun sportsNews(): Call<NewsRss>
 
-    @GET("category/news/culture/feed/")
+    @GET("rss/topics/CAAqIQgKIhtDQkFTRGdvSUwyMHZNRE41ZEdNU0FtdHZLQUFQAQ?hl=ko&gl=KR&ceid=KR%3Ako")
     fun cultureNews(): Call<NewsRss>
 
+    @GET("rss/search?hl=ko&gl=KR&ceid=KR%3Ako")
+    fun search(@Query("q") query: String): Call<NewsRss>
 }
