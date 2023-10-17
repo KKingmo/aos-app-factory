@@ -6,12 +6,16 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import kingmo.kkk.chat.chatlist.ChatListFragment
 import kingmo.kkk.chat.databinding.ActivityMainBinding
+import kingmo.kkk.chat.mypage.MyPageFragment
 import kingmo.kkk.chat.userlist.UserFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val userFragment = UserFragment()
+    private val chatListFragment = ChatListFragment()
+    private val myPageFragment = MyPageFragment()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -31,9 +35,11 @@ class MainActivity : AppCompatActivity() {
                     return@setOnItemSelectedListener true
                 }
                 R.id.chatroomList -> {
+                    replaceFragment(chatListFragment)
                     return@setOnItemSelectedListener true
                 }
                 R.id.myPage -> {
+                    replaceFragment(myPageFragment)
                     return@setOnItemSelectedListener true
                 }
                 else -> {
@@ -41,6 +47,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+        replaceFragment(userFragment)
     }
 
     private fun replaceFragment(fragment: Fragment) {
