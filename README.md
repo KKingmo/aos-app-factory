@@ -12,3 +12,9 @@
 ### [웹툰 뷰어](./factory-2/WebtoonViewer/)
 ### [녹음기](./factory-2/VoiceRecorder/)
 ### [데일리 공지](./factory-2/DailyNotices/)
+### [깃헙 레포 조회](./factory-2/GitRepoSearch/)
+### [뉴스](./factory-2/News/)
+### [1대1 채팅](./factory-2/Chat/)
+
+## 3
+###
