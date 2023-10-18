@@ -1,5 +1,6 @@
 package kingmo.kkk.chat.chatlist
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -13,6 +14,7 @@ import com.google.firebase.ktx.Firebase
 import kingmo.kkk.chat.Key
 import kingmo.kkk.chat.Key.Companion.DB_CHAT_ROOMS
 import kingmo.kkk.chat.R
+import kingmo.kkk.chat.chatdetail.ChatActivity
 import kingmo.kkk.chat.databinding.FragmentChatlistBinding
 import kingmo.kkk.chat.databinding.FragmentUserlistBinding
 
@@ -23,7 +25,14 @@ class ChatListFragment : Fragment(R.layout.fragment_chatlist) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentChatlistBinding.bind(view)
 
-        val chatListAdapter = ChatListAdapter()
+        val chatListAdapter = ChatListAdapter {chatRoomItem ->
+            val intent = Intent(context, ChatActivity::class.java)
+            intent.putExtra(ChatActivity.EXTRA_OTHER_USER_ID, chatRoomItem.otherUserId)
+            intent.putExtra(ChatActivity.EXTRA_CHAT_ROOM_ID, chatRoomItem.chatRoomId)
+
+            startActivity(intent)
+        }
+
         binding.chatListRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = chatListAdapter

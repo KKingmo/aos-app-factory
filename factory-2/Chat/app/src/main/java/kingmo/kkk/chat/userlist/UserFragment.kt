@@ -1,5 +1,6 @@
 package kingmo.kkk.chat.userlist
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -10,9 +11,13 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import kingmo.kkk.chat.Key.Companion.DB_CHAT_ROOMS
 import kingmo.kkk.chat.Key.Companion.DB_USERS
 import kingmo.kkk.chat.R
+import kingmo.kkk.chat.chatdetail.ChatActivity
+import kingmo.kkk.chat.chatlist.ChatRoomItem
 import kingmo.kkk.chat.databinding.FragmentUserlistBinding
+import java.util.UUID
 
 class UserFragment : Fragment(R.layout.fragment_userlist) {
     private lateinit var binding: FragmentUserlistBinding
@@ -21,7 +26,33 @@ class UserFragment : Fragment(R.layout.fragment_userlist) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentUserlistBinding.bind(view)
 
-        val userListAdapter = UserAdapter()
+        val userListAdapter = UserAdapter { otherUser ->
+            val myUserId = Firebase.auth.currentUser?.uid ?: ""
+            val chatRoomDB = Firebase.database.reference.child(DB_CHAT_ROOMS).child(myUserId)
+                .child(otherUser.userId ?: "")
+
+            chatRoomDB.get().addOnSuccessListener {
+                var chatRoomId = ""
+                if (it.value != null) {
+                    val chatRoom = it.getValue(ChatRoomItem::class.java)
+                    chatRoom?.chatRoomId ?: ""
+                } else {
+                    chatRoomId = UUID.randomUUID().toString()
+                    val newChatRoom = ChatRoomItem(
+                        chatRoomId = chatRoomId,
+                        otherUserName = otherUser.username,
+                        otherUserId = otherUser.userId
+                    )
+                    chatRoomDB.setValue(newChatRoom)
+                }
+
+                val intent = Intent(context, ChatActivity::class.java)
+                intent.putExtra(ChatActivity.EXTRA_OTHER_USER_ID, otherUser.userId)
+                intent.putExtra(ChatActivity.EXTRA_CHAT_ROOM_ID, chatRoomId)
+
+                startActivity(intent)
+            }
+        }
         binding.userListRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = userListAdapter
